@@ -5,3 +5,10 @@ C:\Users\benoit.fauchery\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGe
 C:\Users\benoit.fauchery\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGestionGarage-FAUCHERY\obj\Debug\ApplicationGestionGarage-FAUCHERY.csproj.CoreCompileInputs.cache
 C:\Users\benoit.fauchery\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGestionGarage-FAUCHERY\obj\Debug\ApplicationGestionGarage-FAUCHERY.exe
 C:\Users\benoit.fauchery\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGestionGarage-FAUCHERY\obj\Debug\ApplicationGestionGarage-FAUCHERY.pdb
+C:\Users\mslb3\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGestionGarage-FAUCHERY\bin\Debug\ApplicationGestionGarage-FAUCHERY.exe.config
+C:\Users\mslb3\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGestionGarage-FAUCHERY\bin\Debug\ApplicationGestionGarage-FAUCHERY.exe
+C:\Users\mslb3\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGestionGarage-FAUCHERY\bin\Debug\ApplicationGestionGarage-FAUCHERY.pdb
+C:\Users\mslb3\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGestionGarage-FAUCHERY\obj\Debug\ApplicationGestionGarage-FAUCHERY.csproj.AssemblyReference.cache
+C:\Users\mslb3\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGestionGarage-FAUCHERY\obj\Debug\ApplicationGestionGarage-FAUCHERY.csproj.CoreCompileInputs.cache
+C:\Users\mslb3\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGestionGarage-FAUCHERY\obj\Debug\ApplicationGestionGarage-FAUCHERY.exe
+C:\Users\mslb3\Desktop\ApplicationGestionGarage-FAUCHERY\ApplicationGestionGarage-FAUCHERY\obj\Debug\ApplicationGestionGarage-FAUCHERY.pdb

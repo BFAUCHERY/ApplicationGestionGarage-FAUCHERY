@@ -8,7 +8,10 @@ namespace ApplicationGestionGarage_FAUCHERY
 {
     class Garage
     {
-        private List<Vehicule> vehicules = new List<Vehicule>();
+        public List<Vehicule> vehicules = new List<Vehicule>();
+        public List<Moteur> moteurs = new List<Moteur>();
+        public List<Option> options = new List<Option>();
+        private List<Marque> marques = new List<Marque>();
         public string nom;
 
         public Garage(string nom)
@@ -19,18 +22,49 @@ namespace ApplicationGestionGarage_FAUCHERY
         public void AjouterVehicule(Vehicule vehicule)
         {
             vehicules.Add(vehicule);
-        }
 
-        public void Afficher()
-        {
-            Console.WriteLine("Garage " + nom + "\n");
-            foreach (var vehicule in vehicules)
+            if (!marques.Contains(vehicule.marque))
             {
-                vehicule.Afficher();
+                marques.Add(vehicule.marque);
             }
         }
 
-        public void AfficherVoiture()
+        public void AjouterMoteur(Moteur moteur)
+        {
+            moteurs.Add(moteur);
+        }
+
+        public void AjouterOption(Option option)
+        {
+            options.Add(option);
+        }
+
+        public void SupprimerVehicule(Vehicule vehicule)
+        {
+            vehicules.Remove(vehicule);
+        }
+
+        public void AfficherVehicule(Vehicule vehicule)
+        {
+            vehicule.Afficher();
+        }
+
+        public void AfficherVehicules()
+        {
+            if(vehicules.Count > 0)
+            {
+                foreach (var vehicule in vehicules)
+                {
+                    vehicule.Afficher();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Pas de véhicule enregisté dans ce garage\n\n");
+            }
+        }
+
+        public void AfficherVoitures()
         {
             Console.WriteLine("Garage " + nom);
             Console.WriteLine("Voitures :\n");
@@ -43,7 +77,7 @@ namespace ApplicationGestionGarage_FAUCHERY
             }
         }
 
-        public void AfficherCamion()
+        public void AfficherCamions()
         {
             Console.WriteLine("Garage " + nom);
             Console.WriteLine("Camions :\n");
@@ -56,7 +90,7 @@ namespace ApplicationGestionGarage_FAUCHERY
             }
         }
 
-        public void AfficherMoto()
+        public void AfficherMotos()
         {
             Console.WriteLine("Garage " + nom);
             Console.WriteLine("Motos :\n");
@@ -66,6 +100,42 @@ namespace ApplicationGestionGarage_FAUCHERY
                 {
                     vehicule.Afficher();
                 }
+            }
+        }
+
+        public void AfficherMoteurs()
+        {
+            Console.WriteLine("Garage " + nom);
+            Console.WriteLine("Moteurs :\n");
+            foreach (var moteur in moteurs)
+            {
+                moteur.Afficher();
+            }
+        }
+
+        public void AfficherOptions()
+        {
+            Console.WriteLine("Garage " + nom);
+            Console.WriteLine("Options :\n");
+            foreach (var option in options)
+            {
+                option.Afficher();
+            }
+        }
+
+        public void AfficherMarques()
+        {
+            foreach (var marque in marques)
+            {
+                Console.WriteLine(marque);
+            }
+        }
+
+        public void AfficherTypesMoteurs()
+        {
+            foreach (var moteur in moteurs)
+            {
+                Console.WriteLine(moteur);
             }
         }
 

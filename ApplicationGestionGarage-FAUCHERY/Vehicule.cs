@@ -34,6 +34,14 @@ namespace ApplicationGestionGarage_FAUCHERY
         public abstract float CalculerTaxe();
         public abstract float PrixTotal();
 
+        public void AjouterOption(Option option)
+        {
+            options.Add(option);
+        }
+        public void SupprimerOption(Option option)
+        {
+            options.Remove(option);
+        }
         public int CompareTo(Vehicule other)
         {
             if (other == null)

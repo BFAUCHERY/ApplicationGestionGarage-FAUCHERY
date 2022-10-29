@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGestionGarage_FAUCHERY
 {
@@ -11,10 +7,10 @@ namespace ApplicationGestionGarage_FAUCHERY
         static void Main(string[] args)
         {
             TestsEtape1();
-            Console.Read();
+            Etape2();
         }
 
-        static void TestsEtape1()
+        private static void TestsEtape1()
         {
             Garage garage = new Garage("SANCHEZ");
 
@@ -37,9 +33,9 @@ namespace ApplicationGestionGarage_FAUCHERY
             Console.WriteLine("\n****************************************\n");
             Console.WriteLine("Affichage des véhicules");
             Console.WriteLine("\n****************************************\n");
-            garage.AfficherCamion();
-            garage.AfficherVoiture();
-            garage.AfficherMoto();
+            garage.AfficherCamions();
+            garage.AfficherVoitures();
+            garage.AfficherMotos();
 
             Console.WriteLine("****************************************\n");
             Console.WriteLine("Trie des véhicules");
@@ -49,7 +45,13 @@ namespace ApplicationGestionGarage_FAUCHERY
             Console.WriteLine("****************************************\n");
             Console.WriteLine("Affichage des véhicules triés");
             Console.WriteLine("\n****************************************\n");
-            garage.Afficher();
+            garage.AfficherVehicules();
+        }
+
+        private static void Etape2()
+        {
+            Menu menu = new Menu(new Garage("Chez PEDRO"));
+            menu.Start();
         }
     }
 }
