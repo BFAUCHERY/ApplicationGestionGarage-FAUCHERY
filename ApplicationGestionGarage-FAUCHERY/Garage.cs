@@ -22,21 +22,32 @@ namespace ApplicationGestionGarage_FAUCHERY
         public void AjouterVehicule(Vehicule vehicule)
         {
             vehicules.Add(vehicule);
-
-            if (!marques.Contains(vehicule.marque))
-            {
-                marques.Add(vehicule.marque);
-            }
+            AjouterMarque(vehicule.marque);
+            AjouterMoteur(vehicule.moteur);
         }
 
         public void AjouterMoteur(Moteur moteur)
         {
-            moteurs.Add(moteur);
+            if (!moteurs.Contains(moteur))
+            {
+                moteurs.Add(moteur);
+            }
         }
 
         public void AjouterOption(Option option)
         {
-            options.Add(option);
+            if (!options.Contains(option))
+            {
+                options.Add(option);
+            }
+        }
+
+        public void AjouterMarque(Marque marque)
+        {
+            if (!marques.Contains(marque))
+            {
+                marques.Add(marque);
+            }
         }
 
         public void SupprimerVehicule(Vehicule vehicule)
@@ -135,7 +146,7 @@ namespace ApplicationGestionGarage_FAUCHERY
         {
             foreach (var moteur in moteurs)
             {
-                Console.WriteLine(moteur);
+                Console.WriteLine(moteur.typeMoteur);
             }
         }
 

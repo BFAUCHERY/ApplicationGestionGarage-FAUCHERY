@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace ApplicationGestionGarage_FAUCHERY
 {
@@ -95,14 +96,6 @@ namespace ApplicationGestionGarage_FAUCHERY
             switch (Int16.Parse(Console.ReadLine()))
             {
                 case 1:
-                    Console.WriteLine("Créer un option :\n");
-                    Console.WriteLine("Nom de l'option :");
-                    string nom = Console.ReadLine();
-                    Console.WriteLine("Nom de l'option :");
-                    float prix = float.Parse(Console.ReadLine());
-                    return new Option(nom,prix);
-                    break;
-                case 2:
                     Console.WriteLine("Ajouter une option existante :\n");
                     Console.WriteLine("1. Recherche par identifiant");
                     Console.WriteLine("2. Recherche par nom\n");
@@ -120,9 +113,25 @@ namespace ApplicationGestionGarage_FAUCHERY
                             break;
                     }
                     break;
-                default:
+                case 2:
+                    try
+                    {
+                        Console.WriteLine("Créer un option :\n");
+                        Console.WriteLine("Nom de l'option :");
+                        string nom = Console.ReadLine();
+                        Console.WriteLine("Prix de l'option :");
+                        float prix = float.Parse(Console.ReadLine());
+
+                        Option option = new Option(nom, prix);
+                        garage.AjouterOption(option);
+                        return option;
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Veuillez rentrer une valeur correcte pour chaque champs");
+                        CreerOption();
+                    }
                     break;
-                    
             }
             return null;
         }
@@ -294,8 +303,22 @@ namespace ApplicationGestionGarage_FAUCHERY
         private Option SelectOption()
         {
             Console.WriteLine("Sélectionner une option :\n");
-            Console.WriteLine("Nom de l'option :");
-            return garage.options.Find(x => x.nom == Console.ReadLine());
+            Console.WriteLine("1. Recherche par identifiant");
+            Console.WriteLine("2. Recherche par nom\n");
+            switch (Int16.Parse(Console.ReadLine()))
+            {
+                case 1:
+                    Console.WriteLine("Identifiant de l'option :");
+                    return garage.options.Find(x => x.id == Int16.Parse(Console.ReadLine()));
+                    break;
+                case 2:
+                    Console.WriteLine("Nom de l'option :");
+                    return garage.options.Find(x => x.nom == Console.ReadLine());
+                    break;
+                default:
+                    break;
+            }
+            return null;
         }
 
         private Vehicule SelectVehicule()
@@ -321,8 +344,49 @@ namespace ApplicationGestionGarage_FAUCHERY
 
         private int GetChoix(string choix)
         {
+            try
+            {
+                if(Int16.Parse(choix) <= 13 && Int16.Parse(choix) >= 1)
+                {
+                    return Int16.Parse(choix);
+                }
+                else
+                {
+                    throw new MenuException();
+                }
+            }
+            catch(Exception e)
+            {
+                if(e is FormatException)
+                {
+                    Console.WriteLine(@"/!\ Le choix saisie n'est pas un nombre /!\" + "\n");
+                }
+                else if(e is MenuException)
+                {
+                    Console.WriteLine(@"/!\ Le choix n'est pas compris entre 0 et 11. /!\" + "\n");
+                }
+                return 0;
+            }
+        }
+    }
 
-            return Int16.Parse(choix);
+    [Serializable]
+    internal class MenuException : Exception
+    {
+        public MenuException()
+        {
+        }
+
+        public MenuException(string message) : base(message)
+        {
+        }
+
+        public MenuException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected MenuException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
         }
     }
 }
