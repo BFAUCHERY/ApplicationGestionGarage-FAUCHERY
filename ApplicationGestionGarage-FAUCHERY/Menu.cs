@@ -49,22 +49,43 @@ namespace ApplicationGestionGarage_FAUCHERY
                     garage.AfficherVehicules();
                     break;
                 case 2:
-                    garage.AjouterVehicule(CreerVehicule());
+                    garage.AjouterVehicule(garage.CreerVehicule());
                     break;
                 case 3:
-                    garage.SupprimerVehicule(SelectVehicule());
+                    garage.SupprimerVehicule(garage.GetVehicule());
                     break;
                 case 4:
-                    garage.AfficherVehicule(SelectVehicule());
+                    garage.AfficherVehicule(garage.GetVehicule());
                     break;
                 case 5:
-                    SelectVehicule().AfficherOptions();
+                    try
+                    {
+                        garage.GetVehicule().AfficherOptions();
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Console.WriteLine("Aucun véhicule ne correspond à la valeur indiquée.\n");
+                    }
                     break;
                 case 6:
-                    SelectVehicule().AjouterOption(CreerOption());
+                    try
+                    {
+                        garage.GetVehicule().AjouterOption(garage.SelectOption());//Select option se montre quand meme si annuler
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Console.WriteLine("Aucun véhicule ne correspond à la valeur indiquée.\n");
+                    }
                     break;
                 case 7:
-                    SelectVehicule().SupprimerOption(SelectOption());
+                    try
+                    {
+                        garage.GetVehicule().SupprimerOption(garage.GetOption());//Select option se montre quand meme si annuler
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Console.WriteLine("Aucun véhicule ne correspond à la valeur indiquée.\n");
+                    }
                     break;
                 case 8:
                     garage.AfficherOptions();
@@ -85,261 +106,6 @@ namespace ApplicationGestionGarage_FAUCHERY
                     quit = true;
                     break;
             }
-        }
-
-        private Option CreerOption()
-        {
-            Console.WriteLine("Créer une option :\n");
-            Console.WriteLine("1. Ajouter une option existante");
-            Console.WriteLine("2. Créer une option\n");
-
-            switch (Int16.Parse(Console.ReadLine()))
-            {
-                case 1:
-                    Console.WriteLine("Ajouter une option existante :\n");
-                    Console.WriteLine("1. Recherche par identifiant");
-                    Console.WriteLine("2. Recherche par nom\n");
-                    switch (Int16.Parse(Console.ReadLine()))
-                    {
-                        case 1:
-                            Console.WriteLine("Identifiant de l'option :");
-                            return garage.options.Find(x => x.id == Int16.Parse(Console.ReadLine()));
-                            break;
-                        case 2:
-                            Console.WriteLine("Nom de l'option :");
-                            return garage.options.Find(x => x.nom == Console.ReadLine());
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case 2:
-                    try
-                    {
-                        Console.WriteLine("Créer un option :\n");
-                        Console.WriteLine("Nom de l'option :");
-                        string nom = Console.ReadLine();
-                        Console.WriteLine("Prix de l'option :");
-                        float prix = float.Parse(Console.ReadLine());
-
-                        Option option = new Option(nom, prix);
-                        garage.AjouterOption(option);
-                        return option;
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine("Veuillez rentrer une valeur correcte pour chaque champs");
-                        CreerOption();
-                    }
-                    break;
-            }
-            return null;
-        }
-
-        private Vehicule CreerVehicule()
-        {
-            Console.WriteLine("Créer un véhicule :\n");
-            Console.WriteLine("Type de véhicule :");
-            Console.WriteLine("\t1. Voiture");
-            Console.WriteLine("\t2. Camion");
-            Console.WriteLine("\t3. Moto\n");
-            switch (Int16.Parse(Console.ReadLine()))
-            {
-                case 1:
-                    return CreerVoiture();
-                    break;
-                case 2:
-                    return CreerCamion();
-                    break;
-                case 3:
-                    return CreerMoto();
-                    break;
-                default:
-                    break;
-            }
-            return null;
-        }
-
-        private Voiture CreerVoiture()
-        {
-            Console.WriteLine("Nom du véhicule :");
-            string nomVoiture = Console.ReadLine();
-            Console.WriteLine("Prix hors taxes :");
-            float prixHTVoiture = float.Parse(Console.ReadLine());
-            Console.WriteLine("Nombre de chevaux fiscaux :");
-            int chevauxFiscaux = Int16.Parse(Console.ReadLine());
-            Console.WriteLine("Nombre de portes :");
-            int nbPortes = Int16.Parse(Console.ReadLine());
-            Console.WriteLine("Nombre de sièges :");
-            int nbSieges = Int16.Parse(Console.ReadLine());
-            Console.WriteLine("Taille du coffre :");
-            int tailleCoffre = Int16.Parse(Console.ReadLine());
-
-            return new Voiture(nomVoiture, prixHTVoiture, GetMarque(), SelectMoteur(), chevauxFiscaux, nbPortes, nbSieges, tailleCoffre);
-        }
-
-        private Camion CreerCamion()
-        {
-            Console.WriteLine("Nom du véhicule :");
-            string nomCamion = Console.ReadLine();
-            Console.WriteLine("Prix hors taxes :");
-            float prixHTCamion = float.Parse(Console.ReadLine());
-            Console.WriteLine("Nombre d'essieux :");
-            int nbEssieux = Int16.Parse(Console.ReadLine());
-            Console.WriteLine("Poids :");
-            int poids = Int16.Parse(Console.ReadLine());
-            Console.WriteLine("Volume :");
-            int volume = Int16.Parse(Console.ReadLine());
-            
-            return new Camion(nomCamion, prixHTCamion, GetMarque(), SelectMoteur(), nbEssieux, poids, volume);
-        }
-
-        private Moto CreerMoto()
-        {
-            Console.WriteLine("Nom du véhicule :");
-            string nomMoto = Console.ReadLine();
-            Console.WriteLine("Prix hors taxes :");
-            float prixMoto = float.Parse(Console.ReadLine());
-            Console.WriteLine("Cylindrée :");
-            int cylindree = Int16.Parse(Console.ReadLine());
-            
-            return new Moto(nomMoto, prixMoto, GetMarque(), SelectMoteur(), cylindree);
-        }
-
-        private Marque GetMarque()
-        {
-            Console.WriteLine("Marque du véhicule :\n");
-            Console.WriteLine("1. AUDI");
-            Console.WriteLine("2. CITROEN");
-            Console.WriteLine("3. FERRARI");
-            Console.WriteLine("4. PEUGEOT");
-            Console.WriteLine("5. RENAULT\n");
-
-            switch (Int16.Parse(Console.ReadLine()))
-            {
-                case 1:
-                    return Marque.AUDI;
-                    break;
-                case 2:
-                    return Marque.CITROEN;
-                    break;
-                case 3:
-                    return Marque.FERRARI;
-                    break;
-                case 4:
-                    return Marque.PEUGEOT;
-                    break;
-                case 5:
-                    return Marque.RENAULT;
-                    break;
-                default:
-                    return Marque.CITROEN;
-                    break;
-            }
-        }
-
-        private Moteur SelectMoteur()
-        {
-            Console.WriteLine("Sélectionner un moteur :\n");
-            Console.WriteLine("1. Sélectionner un moteur existant");
-            Console.WriteLine("2. Créer un moteur\n");
-
-            switch (Int16.Parse(Console.ReadLine()))
-            {
-                case 1:
-                    Console.WriteLine("Sélectionner un moteur : \n");
-                    Console.WriteLine("1. Recherche par identifiant");
-                    Console.WriteLine("2. Recherche par nom\n");
-                    switch (Int16.Parse(Console.ReadLine()))
-                    {
-                        case 1:
-                            Console.WriteLine("Identifiant du moteur :");
-                            return garage.moteurs.Find(x => x.id == Int16.Parse(Console.ReadLine()));
-                            break;
-                        case 2:
-                            Console.WriteLine("Nom du véhicule :");
-                            return garage.moteurs.Find(x => x.nom == Console.ReadLine());
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case 2:
-                    Console.WriteLine("Nom du moteur :");
-                    string nom = Console.ReadLine();
-                    Console.WriteLine("Puissance du moteur :");
-                    int puissance = Int16.Parse(Console.ReadLine());
-                    Console.WriteLine("Type de moteur :\n");
-                    Console.WriteLine("1. DIESEL");
-                    Console.WriteLine("2. ELECTRIQUE");
-                    Console.WriteLine("3. ESSENCE");
-                    Console.WriteLine("4. HYBRIDE\n");
-                    TypeMoteur typeMoteur = new TypeMoteur();
-                    switch (Int16.Parse(Console.ReadLine()))
-                    {
-                        case 1:
-                            typeMoteur = TypeMoteur.DIESEL;
-                            break;
-                        case 2:
-                            typeMoteur = TypeMoteur.ELECTRIQUE;
-                            break;
-                        case 3:
-                            typeMoteur = TypeMoteur.ESSENCE;
-                            break;
-                        case 4:
-                            typeMoteur = TypeMoteur.HYBRIDE;
-                            break;
-                        default:
-                            break;
-                    }
-                    return new Moteur(nom,puissance,typeMoteur);
-                    break;
-                default:
-                    break;
-            }
-            return null;
-        }
-
-        private Option SelectOption()
-        {
-            Console.WriteLine("Sélectionner une option :\n");
-            Console.WriteLine("1. Recherche par identifiant");
-            Console.WriteLine("2. Recherche par nom\n");
-            switch (Int16.Parse(Console.ReadLine()))
-            {
-                case 1:
-                    Console.WriteLine("Identifiant de l'option :");
-                    return garage.options.Find(x => x.id == Int16.Parse(Console.ReadLine()));
-                    break;
-                case 2:
-                    Console.WriteLine("Nom de l'option :");
-                    return garage.options.Find(x => x.nom == Console.ReadLine());
-                    break;
-                default:
-                    break;
-            }
-            return null;
-        }
-
-        private Vehicule SelectVehicule()
-        {
-            Console.WriteLine("Sélectionner un véhicule : \n");
-            Console.WriteLine("1. Recherche par identifiant");
-            Console.WriteLine("2. Recherche par nom\n");
-            switch (Int16.Parse(Console.ReadLine()))
-            {
-                case 1:
-                    Console.WriteLine("Identifiant du véhicule :");
-                    return garage.vehicules.Find(x => x.id == Int16.Parse(Console.ReadLine()));
-                    break;
-                case 2:
-                    Console.WriteLine("Nom du véhicule :");
-                    return garage.vehicules.Find(x => x.nom == Console.ReadLine());
-                    break;
-                default:
-                    break;
-            }
-            return null;
         }
 
         private int GetChoix(string choix)
@@ -363,7 +129,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                 }
                 else if(e is MenuException)
                 {
-                    Console.WriteLine(@"/!\ Le choix n'est pas compris entre 0 et 11. /!\" + "\n");
+                    Console.WriteLine(@"/!\ Le choix n'est pas compris entre 1 et 12. /!\" + "\n");
                 }
                 return 0;
             }
