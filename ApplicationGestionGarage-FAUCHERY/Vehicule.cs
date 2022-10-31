@@ -28,12 +28,32 @@ namespace ApplicationGestionGarage_FAUCHERY
             this.moteur = moteur;
         }
 
-        public abstract void AfficherOptions();
         public abstract void Afficher();
-        public abstract void AfficherOption(Option option);
         public abstract float CalculerTaxe();
-        public abstract float PrixTotal();
 
+        public float PrixTotal()
+        {
+            float prixCumuleOptions = 0;
+            foreach (var option in options)
+            {
+                prixCumuleOptions += option.prix;
+            }
+            return prixHT + CalculerTaxe() + prixCumuleOptions;
+        }
+        public void AfficherOptions()
+        {
+            foreach (var option in options)
+            {
+                option.Afficher();
+            }
+        }
+        public void AfficherOption(Option option)
+        {
+            if (options.Find(i => i.nom == option.nom) != null)
+            {
+                option.Afficher();
+            }
+        }
         public void AjouterOption(Option option)
         {
             options.Add(option);

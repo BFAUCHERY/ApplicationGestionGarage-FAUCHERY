@@ -34,35 +34,9 @@ namespace ApplicationGestionGarage_FAUCHERY
             Console.WriteLine("\n");
         }
 
-        public override void AfficherOption(Option option)
-        {
-            if (options.Find(i => i.nom == option.nom) != null)
-            {
-                option.Afficher();
-            }
-        }
-
-        public override void AfficherOptions()
-        {
-            foreach (var option in options)
-            {
-                option.Afficher();
-            }
-        }
-
         public override float CalculerTaxe()
         {
             return nbEssieu * 50;
-        }
-
-        public override float PrixTotal()
-        {
-            float prixCumuleOptions = 0;
-            foreach (var option in options)
-            {
-                prixCumuleOptions += option.prix;
-            }
-            return prixHT + CalculerTaxe() + prixCumuleOptions;
         }
     }
 }
