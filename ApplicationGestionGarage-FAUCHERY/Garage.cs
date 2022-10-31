@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -226,13 +227,10 @@ namespace ApplicationGestionGarage_FAUCHERY
                     {
                         case 1:
                             return CreerVoiture();
-                            break;
                         case 2:
                             return CreerCamion();
-                            break;
                         case 3:
                             return CreerMoto();
-                            break;
                     }
                 }
                 catch (FormatException)
@@ -294,179 +292,114 @@ namespace ApplicationGestionGarage_FAUCHERY
 
         public Moteur SelectMoteur()
         {
-            Console.WriteLine("Sélectionner un moteur :\n");
-            Console.WriteLine("1. Sélectionner un moteur existant");
-            Console.WriteLine("2. Créer un moteur\n");
-
-            switch (Int16.Parse(Console.ReadLine()))
+            if (moteurs.Count > 0)
             {
-                case 1:
-                    GetMoteur();
-                    break;
-                case 2:
-                    CreerMoteur();
-                    break;
-                default:
-                    break;
+                bool restart;
+                do
+                {
+                    restart = false;
+                    try
+                    {
+                        Console.WriteLine("Sélectionner un moteur :\n");
+                        Console.WriteLine("1. Sélectionner un moteur existant");
+                        Console.WriteLine("2. Créer un moteur\n");
+
+                        int choix = Int16.Parse(Console.ReadLine());
+                        if (choix < 1 || choix > 2)
+                        {
+                            throw new FormatException();
+                        }
+
+                        switch (choix)
+                        {
+                            case 1:
+                                return GetMoteur();
+                            case 2:
+                                return CreerMoteur();
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        Console.Clear();
+                        Console.WriteLine(@"/!\ Veuillez rentrer des valeurs correctes pour chaque champs. /!\");
+                        Console.WriteLine("******************************************************************");
+                        restart = true;
+                    }
+                } while (restart);
+                return null;
             }
-            return null;
-        }//Exception à gérer
-
-        private Moteur GetMoteur()
-        {
-            bool restart;
-            do
+            else
             {
-                restart = false;
-                try
-                {
-                    Console.WriteLine("Sélectionner un moteur : \n");
-                    Console.WriteLine("1. Recherche par identifiant");
-                    Console.WriteLine("2. Recherche par nom");
-                    Console.WriteLine("3. Annuler\n");
-
-                    int choix = Int16.Parse(Console.ReadLine());
-                    if (choix < 1 || choix > 3)
-                    {
-                        throw new FormatException();
-                    }
-
-                    switch (Int16.Parse(Console.ReadLine()))
-                    {
-                        case 1:
-                            Console.WriteLine("Identifiant du moteur :");
-                            string id = Console.ReadLine();
-                            return moteurs.Find(x => x.id == Int16.Parse(id));
-                            break;
-                        case 2:
-                            Console.WriteLine("Nom du véhicule :");
-                            string nom = Console.ReadLine();
-                            return moteurs.Find(x => x.nom == nom);
-                            break;
-                        default:
-                            return null;
-                            break;
-                    }
-                }
-                catch (FormatException)
-                {
-                    Console.Clear();
-                    Console.WriteLine(@"/!\ Veuillez rentrer des valeurs correctes pour chaque champs. /!\");
-                    Console.WriteLine("******************************************************************");
-                    restart = true;
-                }
-            } while (restart);
-            return null;
-        }
-
-        private Moteur CreerMoteur()
-        {
-            Console.WriteLine("Nom du moteur :");
-            string nom = Console.ReadLine();
-            Console.WriteLine("Puissance du moteur :");
-            int puissance = Int16.Parse(Console.ReadLine());
-            Console.WriteLine("Type de moteur :\n");
-            Console.WriteLine("1. DIESEL");
-            Console.WriteLine("2. ELECTRIQUE");
-            Console.WriteLine("3. ESSENCE");
-            Console.WriteLine("4. HYBRIDE\n");
-            TypeMoteur typeMoteur = new TypeMoteur();
-            switch (Int16.Parse(Console.ReadLine()))
-            {
-                case 1:
-                    typeMoteur = TypeMoteur.DIESEL;
-                    break;
-                case 2:
-                    typeMoteur = TypeMoteur.ELECTRIQUE;
-                    break;
-                case 3:
-                    typeMoteur = TypeMoteur.ESSENCE;
-                    break;
-                case 4:
-                    typeMoteur = TypeMoteur.HYBRIDE;
-                    break;
-                default:
-                    break;
+                Console.WriteLine("Aucun moteur enregistré, création d'un moteur :\n");
+                return CreerMoteur();
             }
-            return new Moteur(nom, puissance, typeMoteur);
-        }//Exception à gérer
-
-        public Vehicule GetVehicule()
-        {
-            bool restart;
-            do
-            {
-                restart = false;
-                try
-                {
-                    Console.WriteLine("Sélectionner un véhicule : \n");
-                    Console.WriteLine("1. Recherche par identifiant");
-                    Console.WriteLine("2. Recherche par nom");
-                    Console.WriteLine("3. Annuler\n");
-
-                    int choix = Int16.Parse(Console.ReadLine());
-                    if (choix < 1 || choix > 3)
-                    {
-                        throw new FormatException();
-                    }
-
-                    switch (choix)
-                    {
-                        case 1:
-                            Console.WriteLine("Identifiant du véhicule :");
-                            string id = Console.ReadLine();
-                            return vehicules.Find(x => x.id == Int16.Parse(id));
-                            break;
-                        case 2:
-                            Console.WriteLine("Nom du véhicule :");
-                            string name = Console.ReadLine();
-                            return vehicules.Find(x => x.nom == name);
-                            break;
-                        case 3:
-                            break;
-                    }
-                }
-                catch(FormatException)
-                {
-                    Console.Clear();
-                    Console.WriteLine(@"/!\ Veuillez rentrer des valeurs correctes pour chaque champs. /!\");
-                    Console.WriteLine("******************************************************************");
-                    restart = true;
-                }
-            } while (restart);
-            return null;
+            
         }
 
         public Option SelectOption()
         {
+            if(options.Count > 0)
+            {
+                bool restart;
+                do
+                {
+                    restart = false;
+                    try
+                    {
+                        Console.WriteLine("Créer une option :\n");
+                        Console.WriteLine("1. Ajouter une option existante");
+                        Console.WriteLine("2. Créer une option");
+                        Console.WriteLine("3. Annuler\n");
+
+                        int choix = Int16.Parse(Console.ReadLine());
+                        if (choix < 1 || choix > 3)
+                        {
+                            throw new FormatException();
+                        }
+
+                        switch (choix)
+                        {
+                            case 1:
+                                return GetOption();
+                            case 2:
+                                return CreerOption();
+                            case 3:
+                                break;
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        Console.Clear();
+                        Console.WriteLine(@"/!\ Veuillez rentrer des valeurs correctes pour chaque champs. /!\");
+                        Console.WriteLine("******************************************************************");
+                        restart = true;
+                    }
+                } while (restart);
+                return null;
+            }
+            else
+            {
+                Console.WriteLine("Aucune option enregistrée, création d'une option :\n");
+                return CreerOption();
+            }
+            
+        }
+
+        private Moteur CreerMoteur()
+        {
             bool restart;
             do
             {
                 restart = false;
                 try
                 {
-                    Console.WriteLine("Créer une option :\n");
-                    Console.WriteLine("1. Ajouter une option existante");
-                    Console.WriteLine("2. Créer une option");
-                    Console.WriteLine("3. Annuler\n");
+                    Console.WriteLine("Nom du moteur :");
+                    string nom = Console.ReadLine();
+                    Console.WriteLine("Puissance du moteur :");
+                    int puissance = Int16.Parse(Console.ReadLine());
 
-                    int choix = Int16.Parse(Console.ReadLine());
-                    if (choix < 1 || choix > 3)
-                    {
-                        throw new FormatException();
-                    }
+                    return new Moteur(nom, puissance, GetTypeMoteur());
 
-                    switch (choix)
-                    {
-                        case 1:
-                            return GetOption();
-                            break;
-                        case 2:
-                            return CreerOption();
-                            break;
-                        case 3:
-                            break;
-                    }
                 }
                 catch (FormatException)
                 {
@@ -492,6 +425,130 @@ namespace ApplicationGestionGarage_FAUCHERY
             return option;
         }
 
+        private Moteur GetMoteur()
+        {
+            bool restart;
+            do
+            {
+                restart = false;
+                try
+                {
+                    Console.WriteLine("Sélectionner un moteur : \n");
+                    Console.WriteLine("1. Recherche par identifiant");
+                    Console.WriteLine("2. Recherche par nom\n");
+
+                    int choix = Int16.Parse(Console.ReadLine());
+                    if (choix < 1 || choix > 2)
+                    {
+                        throw new FormatException();
+                    }
+
+                    switch (choix)
+                    {
+                        case 1:
+                            Console.WriteLine("Identifiant du moteur :");
+                            string id = Console.ReadLine();
+                            if (moteurs.Any(x => x.id == Int16.Parse(id)))
+                            {
+                                return moteurs.Find(x => x.id == Int16.Parse(id));
+                            }
+                            else
+                            {
+                                throw new ItemNotFoundException();
+                            }
+                        case 2:
+                            Console.WriteLine("Nom du véhicule :");
+                            string nom = Console.ReadLine();
+                            if (moteurs.Any(x => x.nom == nom))
+                            {
+                                return moteurs.Find(x => x.nom == nom);
+                            }
+                            else
+                            {
+                                throw new ItemNotFoundException();
+                            }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Clear();
+                    if (e is FormatException)
+                    {
+                        Console.WriteLine(@"/!\ Veuillez rentrer des valeurs correctes pour chaque champs. /!\");
+                    }
+                    else if (e is ItemNotFoundException)
+                    {
+                        Console.WriteLine(@"/!\ Moteur introuvable, veuillez réitérer la recherche. /!\");
+                    }
+                    Console.WriteLine("******************************************************************");
+                    restart = true;
+                }
+            } while (restart);
+            return null;
+        }
+
+        public Vehicule GetVehicule()
+        {
+            bool restart;
+            do
+            {
+                restart = false;
+                try
+                {
+                    Console.WriteLine("Sélectionner un véhicule : \n");
+                    Console.WriteLine("1. Recherche par identifiant");
+                    Console.WriteLine("2. Recherche par nom\n");
+
+                    int choix = Int16.Parse(Console.ReadLine());
+                    if (choix < 1 || choix > 2)
+                    {
+                        throw new FormatException();
+                    }
+
+                    switch (choix)
+                    {
+                        case 1:
+                            Console.WriteLine("Identifiant du véhicule :");
+                            string id = Console.ReadLine();
+                            if (vehicules.Any(x => x.id == Int16.Parse(id)))
+                            {
+                                return vehicules.Find(x => x.id == Int16.Parse(id));
+                            }
+                            else
+                            {
+                                throw new ItemNotFoundException();
+                            }
+                        case 2:
+                            Console.WriteLine("Nom du véhicule :");
+                            string nom = Console.ReadLine();
+                            if (vehicules.Any(x => x.nom == nom))
+                            {
+                                return vehicules.Find(x => x.nom == nom);
+                            }
+                            else
+                            {
+                                throw new ItemNotFoundException();
+                            }
+                    }
+                }
+                catch(Exception e)
+                {
+                    Console.Clear();
+                    if (e is FormatException)
+                    {
+                        Console.WriteLine(@"/!\ Veuillez rentrer des valeurs correctes pour chaque champs. /!\");
+                    }
+                    else if (e is ItemNotFoundException)
+                    {
+                        Console.WriteLine(@"/!\ Véhicule introuvable, veuillez réitérer la recherche. /!\");
+                    }
+                    Console.WriteLine("******************************************************************");
+                    restart = true;
+                }
+            } while (restart);
+            return null;
+        }
+
         public Option GetOption()
         {
             bool restart;
@@ -502,11 +559,10 @@ namespace ApplicationGestionGarage_FAUCHERY
                 {
                     Console.WriteLine("Sélectionner une option :\n");
                     Console.WriteLine("1. Recherche par identifiant");
-                    Console.WriteLine("2. Recherche par nom");
-                    Console.WriteLine("3. Annuler\n");
+                    Console.WriteLine("2. Recherche par nom\n");
 
                     int choix = Int16.Parse(Console.ReadLine());
-                    if (choix < 1 || choix > 3)
+                    if (choix < 1 || choix > 2)
                     {
                         throw new FormatException();
                     }
@@ -516,21 +572,38 @@ namespace ApplicationGestionGarage_FAUCHERY
                         case 1:
                             Console.WriteLine("Identifiant de l'option :");
                             string id = Console.ReadLine();
-                            return options.Find(x => x.id == Int16.Parse(id));
-                            break;
+                            if (options.Any(x => x.id == Int16.Parse(id)))
+                            {
+                                return options.Find(x => x.id == Int16.Parse(id));
+                            }
+                            else
+                            {
+                                throw new ItemNotFoundException();
+                            }
                         case 2:
                             Console.WriteLine("Nom de l'option :");
-                            string name = Console.ReadLine();
-                            return options.Find(x => x.nom == name);
-                            break;
-                        default:
-                            break;
+                            string nom = Console.ReadLine();
+                            if (options.Any(x => x.nom == nom))
+                            {
+                                return options.Find(x => x.nom == nom);
+                            }
+                            else
+                            {
+                                throw new ItemNotFoundException();
+                            }
                     }
                 }
-                catch(FormatException)
+                catch(Exception e)
                 {
                     Console.Clear();
-                    Console.WriteLine(@"/!\ Veuillez rentrer des valeurs correctes pour chaque champs. /!\");
+                    if(e is FormatException)
+                    {
+                        Console.WriteLine(@"/!\ Veuillez rentrer des valeurs correctes pour chaque champs. /!\");
+                    }
+                    else if(e is ItemNotFoundException)
+                    {
+                        Console.WriteLine(@"/!\ Option introuvable, veuillez réitérer la recherche. /!\");
+                    }
                     Console.WriteLine("******************************************************************");
                     restart = true;
                 }
@@ -538,36 +611,117 @@ namespace ApplicationGestionGarage_FAUCHERY
             return null;
         }
 
+        private TypeMoteur GetTypeMoteur()
+        {
+            bool restart;
+            do
+            {
+                restart = false;
+                try
+                {
+                    Console.WriteLine("Type de moteur :\n");
+                    Console.WriteLine("1. DIESEL");
+                    Console.WriteLine("2. ELECTRIQUE");
+                    Console.WriteLine("3. ESSENCE");
+                    Console.WriteLine("4. HYBRIDE\n");
+
+                    int choix = Int16.Parse(Console.ReadLine());
+                    if (choix < 1 || choix > 4)
+                    {
+                        throw new FormatException();
+                    }
+
+                    switch (choix)
+                    {
+                        case 1:
+                            return TypeMoteur.DIESEL;
+                        case 2:
+                            return TypeMoteur.ELECTRIQUE;
+                        case 3:
+                            return TypeMoteur.ESSENCE;
+                        case 4:
+                            return TypeMoteur.HYBRIDE;
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.Clear();
+                    Console.WriteLine(@"/!\ Veuillez rentrer des valeurs correctes pour chaque champs. /!\");
+                    Console.WriteLine("******************************************************************");
+                    restart = true;
+                }
+            } while (restart);
+
+            //Return impossible à atteindre, créé pour ne pas avoir d'erreurs
+            return TypeMoteur.DIESEL;
+        }
+
         private Marque GetMarque()
         {
-            Console.WriteLine("Marque du véhicule :\n");
-            Console.WriteLine("1. AUDI");
-            Console.WriteLine("2. CITROEN");
-            Console.WriteLine("3. FERRARI");
-            Console.WriteLine("4. PEUGEOT");
-            Console.WriteLine("5. RENAULT\n");
-
-            switch (Int16.Parse(Console.ReadLine()))
+            bool restart;
+            do
             {
-                case 1:
-                    return Marque.AUDI;
-                    break;
-                case 2:
-                    return Marque.CITROEN;
-                    break;
-                case 3:
-                    return Marque.FERRARI;
-                    break;
-                case 4:
-                    return Marque.PEUGEOT;
-                    break;
-                case 5:
-                    return Marque.RENAULT;
-                    break;
-                default:
-                    return Marque.CITROEN;
-                    break;
-            }
-        }//Exception à gérer
+                restart = false;
+                try
+                {
+                    Console.WriteLine("Marque du véhicule :\n");
+                    Console.WriteLine("1. AUDI");
+                    Console.WriteLine("2. CITROEN");
+                    Console.WriteLine("3. FERRARI");
+                    Console.WriteLine("4. PEUGEOT");
+                    Console.WriteLine("5. RENAULT\n");
+
+                    int choix = Int16.Parse(Console.ReadLine());
+                    if (choix < 1 || choix > 5)
+                    {
+                        throw new FormatException();
+                    }
+
+                    switch (choix)
+                    {
+                        case 1:
+                            return Marque.AUDI;
+                        case 2:
+                            return Marque.CITROEN;
+                        case 3:
+                            return Marque.FERRARI;
+                        case 4:
+                            return Marque.PEUGEOT;
+                        case 5:
+                            return Marque.RENAULT;
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.Clear();
+                    Console.WriteLine(@"/!\ Veuillez rentrer des valeurs correctes pour chaque champs. /!\");
+                    Console.WriteLine("******************************************************************");
+                    restart = true;
+                }
+            } while (restart);
+
+            //Return impossible à atteindre, créé pour ne pas avoir d'erreurs
+            return Marque.AUDI;
+        }
+    }
+
+    [Serializable]
+    internal class ItemNotFoundException : Exception
+    {
+        public ItemNotFoundException()
+        {
+        }
+
+        public ItemNotFoundException(string message) : base(message)
+        {
+        }
+
+        public ItemNotFoundException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected ItemNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }
