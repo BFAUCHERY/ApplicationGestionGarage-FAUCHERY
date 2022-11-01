@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+
 
 namespace ApplicationGestionGarage_FAUCHERY
 {
+    [Serializable]
     abstract class Vehicule : IComparable<Vehicule>
     {
-        private static int idIncrement { get; set; }
+        private static int idIncrement = SetIdIncrementStart();
         public int id { get; }
         public string nom { get; set; }
         public float prixHT { get; set; }
@@ -16,7 +18,6 @@ namespace ApplicationGestionGarage_FAUCHERY
         public Moteur moteur { get; set; }
 
         public List<Option> options = new List<Option>();
-
 
         public Vehicule(string nom, float prixHT, Marque marque, Moteur moteur)
         {
@@ -26,6 +27,15 @@ namespace ApplicationGestionGarage_FAUCHERY
             this.prixHT = prixHT;
             this.marque = marque;
             this.moteur = moteur;
+            SauvegarderVehicule();
+        }
+
+        private void SauvegarderVehicule()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream($@"..\..\SerializedObjects\Vehicules\{id + nom}.txt", FileMode.Create, FileAccess.Write);
+            formatter.Serialize(stream, this);
+            stream.Close();
         }
 
         public abstract void Afficher();
@@ -42,9 +52,16 @@ namespace ApplicationGestionGarage_FAUCHERY
         }
         public void AfficherOptions()
         {
-            foreach (var option in options)
+            if (options.Count > 0)
             {
-                option.Afficher();
+                foreach (var option in options)
+                {
+                    option.Afficher();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Aucune option n'a été enregistré pour ce véhicule.");
             }
         }
         public void AfficherOption(Option option)
@@ -70,6 +87,12 @@ namespace ApplicationGestionGarage_FAUCHERY
             }
 
             return Comparer<float>.Default.Compare(this.PrixTotal(), other.PrixTotal());
+        }
+
+        private static int SetIdIncrementStart()
+        {
+            Program program = new Program();
+            return program.GetVehiculesIdIncrementStart();
         }
     }
 }

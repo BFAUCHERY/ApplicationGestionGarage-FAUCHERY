@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ApplicationGestionGarage_FAUCHERY
 {
@@ -31,9 +33,9 @@ namespace ApplicationGestionGarage_FAUCHERY
                 Console.WriteLine("8. Afficher les options");
                 Console.WriteLine("9. Afficher les marques");
                 Console.WriteLine("10. Afficher les types de moteurs");
-                Console.WriteLine("11. Charger le garage");
-                Console.WriteLine("12. Sauvegarder le garage");
-                Console.WriteLine("13. Quitter l'application");
+                Console.WriteLine("11. Sauvegarder le garage");
+                Console.WriteLine("12. Charger un garage");
+                Console.WriteLine("13. Revenir au menu principal");
 
                 ChoixMenu();
             }
@@ -70,7 +72,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                 case 6:
                     try
                     {
-                        garage.GetVehicule().AjouterOption(garage.SelectOption());//Select option se montre quand meme si annuler
+                        garage.GetVehicule().AjouterOption(garage.SelectOption());
                     }
                     catch (NullReferenceException)
                     {
@@ -80,7 +82,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                 case 7:
                     try
                     {
-                        garage.GetVehicule().SupprimerOption(garage.GetOption());//Select option se montre quand meme si annuler
+                        garage.GetVehicule().SupprimerOption(garage.GetOption());
                     }
                     catch (NullReferenceException)
                     {
@@ -97,15 +99,51 @@ namespace ApplicationGestionGarage_FAUCHERY
                     garage.AfficherTypesMoteurs();
                     break;
                 case 11:
-                    //TODO : Charger un garage
+                    SauvegarderGarage();
                     break;
                 case 12:
-                    //TODO : Sauvegarder un garage
+                    ChargerGarage();
                     break;
                 case 13:
                     quit = true;
                     break;
             }
+        }
+
+        private void SauvegarderGarage()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream($@"..\..\SerializedObjects\Garages\{garage.nom}.txt", FileMode.Create, FileAccess.Write);
+            formatter.Serialize(stream, garage);
+            stream.Close();
+        }
+
+        private void ChargerGarage()
+        {
+            bool restart;
+            do
+            {
+                restart = false;
+                try
+                {
+                    Console.WriteLine("Nom du garage :");
+                    string nom = Console.ReadLine();
+                    IFormatter formatter = new BinaryFormatter();
+                    Stream stream = new FileStream($@"..\..\SerializedObjects\Garages\{nom}.txt", FileMode.Open, FileAccess.Read);
+                    garage = (Garage)formatter.Deserialize(stream);
+                    stream.Close();
+                }
+                catch (FileNotFoundException)
+                {
+                    Console.WriteLine($@"/!\ Aucun garage situé dans {Path.GetFullPath(@"..\..\SerializedObjects\Garages\")} ne correspond à la valeur indiquée. /!\");
+                    Console.WriteLine("********************************************************");
+                    Console.WriteLine("Réitérer une recherche ?(O/N)");
+                    if (Console.ReadLine().ToUpper() == "O")
+                    {
+                        restart = true;
+                    }
+                }
+            } while (restart);
         }
 
         private int GetChoix(string choix)
@@ -129,7 +167,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                 }
                 else if(e is MenuException)
                 {
-                    Console.WriteLine(@"/!\ Le choix n'est pas compris entre 1 et 12. /!\" + "\n");
+                    Console.WriteLine(@"/!\ Le choix n'est pas compris entre 1 et 13. /!\" + "\n");
                 }
                 return 0;
             }

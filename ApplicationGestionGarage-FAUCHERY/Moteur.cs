@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ApplicationGestionGarage_FAUCHERY
 {
+    [Serializable]
     class Moteur
     {
-        private static int idIncrement { get; set; }
+        private static int idIncrement = SetIdIncrementStart();
         public int id { get; }
         public string nom { get; set; }
         public int puissance { get; set; }
@@ -21,6 +21,15 @@ namespace ApplicationGestionGarage_FAUCHERY
             this.nom = nom;
             this.puissance = puissance;
             this.typeMoteur = typeMoteur;
+            SauvegarderMoteur();
+        }
+
+        private void SauvegarderMoteur()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream($@"..\..\SerializedObjects\Moteurs\{id + nom}.txt", FileMode.Create, FileAccess.Write);
+            formatter.Serialize(stream, this);
+            stream.Close();
         }
 
         public void Afficher()
@@ -30,6 +39,12 @@ namespace ApplicationGestionGarage_FAUCHERY
             Console.WriteLine("Puissance : " + puissance +"CH");
             Console.WriteLine("Type de moteur : " + typeMoteur);
             Console.WriteLine("\n");
+        }
+
+        private static int SetIdIncrementStart()
+        {
+            Program program = new Program();
+            return program.GetMoteursIdIncrementStart();
         }
     }
 }

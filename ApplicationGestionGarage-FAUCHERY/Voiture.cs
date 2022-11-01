@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGestionGarage_FAUCHERY
 {
+    [Serializable]
     class Voiture : Vehicule
     {
         public int chevauxFiscaux { get; set; }

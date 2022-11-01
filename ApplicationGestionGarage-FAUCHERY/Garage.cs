@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGestionGarage_FAUCHERY
 {
+    [Serializable]
     class Garage
     {
         public List<Vehicule> vehicules = new List<Vehicule>();
@@ -217,7 +218,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                     Console.WriteLine("\t2. Camion");
                     Console.WriteLine("\t3. Moto\n");
 
-                    int choix = Int16.Parse(Console.ReadLine());
+                    int choix = Int32.Parse(Console.ReadLine());
                     if(choix < 1 || choix > 3)
                     {
                         throw new FormatException();
@@ -251,13 +252,13 @@ namespace ApplicationGestionGarage_FAUCHERY
             Console.WriteLine("Prix hors taxes :");
             float prixHTVoiture = float.Parse(Console.ReadLine());
             Console.WriteLine("Nombre de chevaux fiscaux :");
-            int chevauxFiscaux = Int16.Parse(Console.ReadLine());
+            int chevauxFiscaux = Int32.Parse(Console.ReadLine());
             Console.WriteLine("Nombre de portes :");
-            int nbPortes = Int16.Parse(Console.ReadLine());
+            int nbPortes = Int32.Parse(Console.ReadLine());
             Console.WriteLine("Nombre de sièges :");
-            int nbSieges = Int16.Parse(Console.ReadLine());
+            int nbSieges = Int32.Parse(Console.ReadLine());
             Console.WriteLine("Taille du coffre :");
-            int tailleCoffre = Int16.Parse(Console.ReadLine());
+            int tailleCoffre = Int32.Parse(Console.ReadLine());
 
             return new Voiture(nomVoiture, prixHTVoiture, GetMarque(), SelectMoteur(), chevauxFiscaux, nbPortes, nbSieges, tailleCoffre);         
         }
@@ -269,11 +270,11 @@ namespace ApplicationGestionGarage_FAUCHERY
             Console.WriteLine("Prix hors taxes :");
             float prixHTCamion = float.Parse(Console.ReadLine());
             Console.WriteLine("Nombre d'essieux :");
-            int nbEssieux = Int16.Parse(Console.ReadLine());
+            int nbEssieux = Int32.Parse(Console.ReadLine());
             Console.WriteLine("Poids :");
-            int poids = Int16.Parse(Console.ReadLine());
+            int poids = int.Parse(Console.ReadLine());
             Console.WriteLine("Volume :");
-            int volume = Int16.Parse(Console.ReadLine());
+            int volume = Int32.Parse(Console.ReadLine());
 
             return new Camion(nomCamion, prixHTCamion, GetMarque(), SelectMoteur(), nbEssieux, poids, volume);
         }
@@ -285,7 +286,7 @@ namespace ApplicationGestionGarage_FAUCHERY
             Console.WriteLine("Prix hors taxes :");
             float prixMoto = float.Parse(Console.ReadLine());
             Console.WriteLine("Cylindrée :");
-            int cylindree = Int16.Parse(Console.ReadLine());
+            int cylindree = Int32.Parse(Console.ReadLine());
 
             return new Moto(nomMoto, prixMoto, GetMarque(), SelectMoteur(), cylindree);
         }
@@ -304,7 +305,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                         Console.WriteLine("1. Sélectionner un moteur existant");
                         Console.WriteLine("2. Créer un moteur\n");
 
-                        int choix = Int16.Parse(Console.ReadLine());
+                        int choix = Int32.Parse(Console.ReadLine());
                         if (choix < 1 || choix > 2)
                         {
                             throw new FormatException();
@@ -351,7 +352,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                         Console.WriteLine("2. Créer une option");
                         Console.WriteLine("3. Annuler\n");
 
-                        int choix = Int16.Parse(Console.ReadLine());
+                        int choix = Int32.Parse(Console.ReadLine());
                         if (choix < 1 || choix > 3)
                         {
                             throw new FormatException();
@@ -396,7 +397,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                     Console.WriteLine("Nom du moteur :");
                     string nom = Console.ReadLine();
                     Console.WriteLine("Puissance du moteur :");
-                    int puissance = Int16.Parse(Console.ReadLine());
+                    int puissance = Int32.Parse(Console.ReadLine());
 
                     return new Moteur(nom, puissance, GetTypeMoteur());
 
@@ -437,7 +438,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                     Console.WriteLine("1. Recherche par identifiant");
                     Console.WriteLine("2. Recherche par nom\n");
 
-                    int choix = Int16.Parse(Console.ReadLine());
+                    int choix = Int32.Parse(Console.ReadLine());
                     if (choix < 1 || choix > 2)
                     {
                         throw new FormatException();
@@ -448,9 +449,9 @@ namespace ApplicationGestionGarage_FAUCHERY
                         case 1:
                             Console.WriteLine("Identifiant du moteur :");
                             string id = Console.ReadLine();
-                            if (moteurs.Any(x => x.id == Int16.Parse(id)))
+                            if (moteurs.Any(x => x.id == Int32.Parse(id)))
                             {
-                                return moteurs.Find(x => x.id == Int16.Parse(id));
+                                return moteurs.Find(x => x.id == Int32.Parse(id));
                             }
                             else
                             {
@@ -499,7 +500,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                     Console.WriteLine("1. Recherche par identifiant");
                     Console.WriteLine("2. Recherche par nom\n");
 
-                    int choix = Int16.Parse(Console.ReadLine());
+                    int choix = Int32.Parse(Console.ReadLine());
                     if (choix < 1 || choix > 2)
                     {
                         throw new FormatException();
@@ -510,9 +511,9 @@ namespace ApplicationGestionGarage_FAUCHERY
                         case 1:
                             Console.WriteLine("Identifiant du véhicule :");
                             string id = Console.ReadLine();
-                            if (vehicules.Any(x => x.id == Int16.Parse(id)))
+                            if (vehicules.Any(x => x.id == Int32.Parse(id)))
                             {
-                                return vehicules.Find(x => x.id == Int16.Parse(id));
+                                return vehicules.Find(x => x.id == Int32.Parse(id));
                             }
                             else
                             {
@@ -561,7 +562,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                     Console.WriteLine("1. Recherche par identifiant");
                     Console.WriteLine("2. Recherche par nom\n");
 
-                    int choix = Int16.Parse(Console.ReadLine());
+                    int choix = Int32.Parse(Console.ReadLine());
                     if (choix < 1 || choix > 2)
                     {
                         throw new FormatException();
@@ -572,9 +573,9 @@ namespace ApplicationGestionGarage_FAUCHERY
                         case 1:
                             Console.WriteLine("Identifiant de l'option :");
                             string id = Console.ReadLine();
-                            if (options.Any(x => x.id == Int16.Parse(id)))
+                            if (options.Any(x => x.id == Int32.Parse(id)))
                             {
-                                return options.Find(x => x.id == Int16.Parse(id));
+                                return options.Find(x => x.id == Int32.Parse(id));
                             }
                             else
                             {
@@ -625,7 +626,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                     Console.WriteLine("3. ESSENCE");
                     Console.WriteLine("4. HYBRIDE\n");
 
-                    int choix = Int16.Parse(Console.ReadLine());
+                    int choix = Int32.Parse(Console.ReadLine());
                     if (choix < 1 || choix > 4)
                     {
                         throw new FormatException();
@@ -671,7 +672,7 @@ namespace ApplicationGestionGarage_FAUCHERY
                     Console.WriteLine("4. PEUGEOT");
                     Console.WriteLine("5. RENAULT\n");
 
-                    int choix = Int16.Parse(Console.ReadLine());
+                    int choix = Int32.Parse(Console.ReadLine());
                     if (choix < 1 || choix > 5)
                     {
                         throw new FormatException();
